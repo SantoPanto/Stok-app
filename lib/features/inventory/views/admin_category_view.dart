@@ -28,8 +28,10 @@ class AdminCategoryView extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: context.read<InventoryBloc>(),
+                        builder: (_) => BlocProvider(
+                          // Ürünler sayfasına geçerken TERTEMİZ bir Bloc oluşturuyoruz
+                          // Ve LoadProducts event'ini build içinde değil, SADECE BİR KERE burada ateşliyoruz.
+                          create: (context) => InventoryBloc()..add(LoadProducts(category.id)),
                           child: AdminProductView(categoryId: category.id),
                         ),
                       ),

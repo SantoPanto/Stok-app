@@ -11,7 +11,7 @@ class AdminProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<InventoryBloc>().add(LoadProducts(categoryId));
+    
 
     return Scaffold(
       appBar: AppBar(title: const Text('Products')),

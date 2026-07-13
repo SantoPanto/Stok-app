@@ -1,39 +1,32 @@
-import 'package:equatable/equatable.dart';
+part of 'inventory_bloc.dart';
 
-import '../models/category_model.dart';
-import '../models/product_model.dart';
-
-abstract class InventoryState extends Equatable {
+sealed class InventoryState extends Equatable {
   const InventoryState();
-
   @override
   List<Object?> get props => [];
 }
 
-class InventoryLoading extends InventoryState {}
+final class InventoryLoading extends InventoryState {}
 
-class CategoriesLoaded extends InventoryState {
-  const CategoriesLoaded(this.categories);
-
+final class CategoriesLoaded extends InventoryState {
   final List<CategoryModel> categories;
+  const CategoriesLoaded(this.categories);
 
   @override
   List<Object?> get props => [categories];
 }
 
-class ProductsLoaded extends InventoryState {
-  const ProductsLoaded(this.products);
-
+final class ProductsLoaded extends InventoryState {
   final List<ProductModel> products;
+  const ProductsLoaded(this.products);
 
   @override
   List<Object?> get props => [products];
 }
 
-class InventoryError extends InventoryState {
-  const InventoryError(this.message);
-
+final class InventoryError extends InventoryState {
   final String message;
+  const InventoryError(this.message);
 
   @override
   List<Object?> get props => [message];

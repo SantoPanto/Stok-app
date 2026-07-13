@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/inventory_bloc.dart';
-import 'bloc/inventory_event.dart';
 import 'views/admin_category_view.dart';
 
 class InventoryPage extends StatelessWidget {

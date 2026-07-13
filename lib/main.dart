@@ -5,13 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/repository/auth_repository.dart';
-import 'firebase_options.dart'; // Firebase platform ayarları için gerekli
+import 'firebase_options.dart';
 import 'features/auth/views/login_view.dart';
+
+// EKLENDİ: Inventory dosyalarının importları
+import 'features/inventory/bloc/inventory_bloc.dart';
+import 'features/inventory/repository/inventory_repository.dart';
+import 'features/inventory/views/admin_category_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Windows/Mobil ayrımı için bu options kısmı şarttır
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -25,11 +29,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = AuthRepository();
+    final inventoryRepository = InventoryRepository(); // EKLENDİ
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(authRepository: authRepository)..add(AppStarted()),
+        ),
+        // EKLENDİ: InventoryBloc artık tüm uygulamadan erişilebilir durumda
+        BlocProvider<InventoryBloc>(
+          create: (context) => InventoryBloc(repository: inventoryRepository)..add(LoadCategories()),
         ),
       ],
       child: MaterialApp(
@@ -49,15 +58,15 @@ class InitialRouteHandler extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthAuthenticated) {
-          return const Scaffold(body: Center(child: Text('Dashboard')));
+          // DEĞİŞTİRİLDİ: Text('Dashboard') yerine artık Kategori yönetim paneline gidiyoruz
+          return const AdminCategoryView(); 
         }
 
         if (state is AuthPendingApproval) {
-          return const Scaffold(body: Center(child: Text('Pending Approval')));
+          return const Scaffold(body: Center(child: Text('Hesabınız onay bekliyor.')));
         }
 
-        // Eğer login_view.dart'ı oluşturup yukarıda import ettiysen, Text yerine const LoginView() döndürebilirsin.
-        return const Scaffold(body: Center(child: LoginView())); 
+        return const LoginView(); 
       },
     );
   }

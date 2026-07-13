@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/inventory_bloc.dart';
-import '../bloc/inventory_event.dart';
-import '../bloc/inventory_state.dart';
 import '../models/category_model.dart';
 import 'admin_product_view.dart';
 
